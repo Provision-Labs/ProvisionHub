@@ -176,6 +176,7 @@ Workers use Go's `text/template` for rendering:
 ### Template Variables
 
 Templates have access to:
+
 - `.Name` - Component/system name
 - `.Namespace` - Namespace or group
 - `.Values` - User-provided values
@@ -272,12 +273,14 @@ docker run \
 ### Health Checks
 
 Workers expose health endpoints:
+
 - `GET /health` - Worker health
 - `GET /metrics` - Prometheus metrics
 
 ### Metrics
 
 Key metrics exposed:
+
 - `jobs_processed_total` - Total jobs processed
 - `jobs_failed_total` - Total failed jobs
 - `job_duration_seconds` - Processing time histogram
@@ -312,6 +315,7 @@ Workers coordinate via RabbitMQ's built-in load balancing.
 ### Resource Limits
 
 Configure resource constraints:
+
 ```bash
 MAX_TEMPLATE_SIZE=10MB
 MAX_WORKSPACE_SIZE=500MB

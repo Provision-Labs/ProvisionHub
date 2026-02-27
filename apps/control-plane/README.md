@@ -41,11 +41,13 @@ The Control Plane serves as the central coordinator for the ProvisionHub platfor
 ## 🔌 API Endpoints
 
 ### Authentication
+
 - `POST /auth/login` - Initiate OIDC login
 - `POST /auth/callback` - OIDC callback handler
 - `POST /auth/logout` - End user session
 
 ### Systems
+
 - `GET /api/v1/systems` - List systems
 - `POST /api/v1/systems` - Create system
 - `GET /api/v1/systems/:id` - Get system details
@@ -53,6 +55,7 @@ The Control Plane serves as the central coordinator for the ProvisionHub platfor
 - `DELETE /api/v1/systems/:id` - Delete system
 
 ### Components
+
 - `GET /api/v1/systems/:id/components` - List components
 - `POST /api/v1/systems/:id/components` - Create component
 - `GET /api/v1/components/:id` - Get component details
@@ -60,6 +63,7 @@ The Control Plane serves as the central coordinator for the ProvisionHub platfor
 - `DELETE /api/v1/components/:id` - Delete component
 
 ### Provisioning Runs
+
 - `GET /api/v1/runs` - List provisioning runs
 - `GET /api/v1/runs/:id` - Get run details
 - `GET /api/v1/runs/:id/logs` - Stream run logs
