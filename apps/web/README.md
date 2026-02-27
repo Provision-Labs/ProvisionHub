@@ -21,7 +21,7 @@ The Web UI serves as the primary interface for developers and platform teams to:
 
 ### Technology Stack
 
-- **Framework**: Next.js 15+ (App Router)
+- **Framework**: Next.js 16+ (App Router)
 - **Language**: TypeScript
 - **Styling**: Material-UI (MUI)
 - **State Management**: React Context / Zustand / TanStack Query
@@ -71,10 +71,12 @@ NEXT_PUBLIC_APP_VERSION=0.1.0
 
 ### Installation
 
+The project supports all three major package managers: **npm**, **yarn**, and **pnpm**.
+
 ```bash
 cd apps/web
 
-# Install dependencies
+# Install dependencies with your preferred package manager
 npm install
 # or
 yarn install
@@ -89,6 +91,12 @@ yarn dev
 pnpm dev
 ```
 
+**Note**:
+
+- A `.npmrc` file is included for pnpm compatibility with Next.js
+- You can use any package manager, but stick to one throughout the project
+- Lock files will be generated on first install (package-lock.json, yarn.lock, or pnpm-lock.yaml)
+
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### Build for Production
@@ -100,6 +108,56 @@ npm run build
 # Start production server
 npm run start
 ```
+
+---
+
+## 📦 Package Manager Support
+
+This project supports **npm**, **yarn**, and **pnpm**. Choose the one that best fits your workflow:
+
+### npm (Default)
+
+```bash
+npm install
+npm run dev
+npm run build
+```
+
+- ✅ Default Node.js package manager
+- ✅ No additional setup required
+- 📄 Creates `package-lock.json`
+
+### Yarn
+
+```bash
+yarn install
+yarn dev
+yarn build
+```
+
+- ✅ Fast and reliable
+- ✅ Works out of the box
+- 📄 Creates `yarn.lock`
+
+### pnpm (Recommended)
+
+```bash
+pnpm install
+pnpm dev
+pnpm build
+```
+
+- ✅ Fastest and most disk-efficient
+- ✅ Pre-configured with `.npmrc` for Next.js compatibility
+- ✅ Saves significant disk space with content-addressable storage
+- 📄 Creates `pnpm-lock.yaml`
+
+**Best Practices**:
+
+- Choose one package manager and use it consistently throughout the project
+- Don't mix package managers (avoid having multiple lock files)
+- Commit your lock file to version control
+- Team members should use the same package manager
 
 ---
 
