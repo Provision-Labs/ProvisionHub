@@ -89,7 +89,7 @@ Tracks execution of a provisioning request and its steps.
 apps/
   control-plane/        # Go API
   worker/               # Go async worker
-  web/                  # Next.js frontend (optional)
+  web/                  # Next.js frontend
 
 catalog/
   modules/              # Component definitions
