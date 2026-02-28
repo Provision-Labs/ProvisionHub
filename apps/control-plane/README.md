@@ -86,7 +86,7 @@ Create a `.env` file or set the following variables:
 
 ```bash
 # Server
-PORT=8080
+PORT=8180
 ENV=development
 
 # Database
@@ -126,7 +126,7 @@ go run ./cmd/migrate up
 go run ./cmd/server
 ```
 
-The API will be available at `http://localhost:8080`
+The API will be available at `http://localhost:8180`
 
 ### Development
 
@@ -156,8 +156,10 @@ apps/control-plane/
 ├── internal/
 │   ├── api/            # HTTP handlers and routes
 │   ├── auth/           # Authentication logic
+│   ├── config/         # Configuration files
 │   ├── domain/         # Business logic and entities
 │   ├── git/            # Git provider integration
+│   ├── middleware/     # Middleware logic
 │   ├── queue/          # RabbitMQ publisher
 │   └── store/          # Database repositories
 ├── pkg/                # Shared utilities
@@ -218,7 +220,7 @@ Build and run the Control Plane in a container:
 docker build -t provisionhub-control-plane .
 
 # Run container
-docker run -p 8080:8080 \
+docker run -p 8180:8180 \
   --env-file .env \
   provisionhub-control-plane
 ```
