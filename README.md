@@ -114,7 +114,7 @@ deployments/
 ### Start infrastructure
 
 ```bash
-docker compose -f deployments/docker-compose.yaml up -d
+docker compose -f deployments/docker-compose.(dev/prod).yaml up -d
 ```
 
 Services:
