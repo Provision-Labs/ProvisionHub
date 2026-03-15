@@ -2,30 +2,41 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 
+	"github.com/Provision-Labs/ProvisionHub/apps/control-plane/internal/auth"
 	"github.com/Provision-Labs/ProvisionHub/apps/control-plane/internal/config"
 	"github.com/Provision-Labs/ProvisionHub/apps/control-plane/internal/middleware"
 )
 
 func main() {
-	cfg := config.Load()
+	cfg := config.LoadConfig()
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/hello-world", handler)
+	// Register features endpoints
+	auth.RegisterRoutes(mux)
 
-	addr := ":" + cfg.Port
+	// Set Session Secret with config handler
+	auth.Init(cfg)
+	middleware.InitStore(cfg.SessionSecret)
+	auth.InitStore(cfg.SessionSecret)
+
+	addr := ":" + strconv.Itoa(cfg.Port)
 	log.Printf("Starting server on port %s...\n", cfg.Port)
 
-	handlerWithMw := middleware.RequestLogger(mux)
+	// Handling all middlewares needed
+	handler := middleware.Chain(mux,
+		middleware.RequestLogger,
+		middleware.RequireAuth,
+	)
 
 	srv := &http.Server{
 		Addr:         addr,
-		Handler:      handlerWithMw,
+		Handler:      handler,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 		IdleTimeout:  60 * time.Second,
@@ -34,12 +45,5 @@ func main() {
 	// Server running on the configured port
 	if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 		log.Fatalf("server error: %v", err)
-	}
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	_, err := fmt.Fprintf(w, "Hello World")
-	if err != nil {
-		panic(err)
 	}
 }
