@@ -1,0 +1,89 @@
+services:
+  keycloak-database:
+    image: postgres:16
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_KC_USER} -d ${POSTGRES_KC_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_DB: ${POSTGRES_KC_DB}
+      POSTGRES_USER: ${POSTGRES_KC_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_KC_PASSWORD}
+    volumes:
+      - keycloak_postgres_data:/var/lib/postgresql/data
+    networks:
+      - keycloak-network
+    restart: unless-stopped
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloak-database:5432/${POSTGRES_KC_DB}
+      KC_DB_USERNAME: ${POSTGRES_KC_USER}
+      KC_DB_PASSWORD: ${POSTGRES_KC_PASSWORD}
+      KEYCLOAK_ADMIN: ${KC_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD}
+    volumes:
+      - ./deployments/keycloak/realm-export.json:/opt/keycloak/data/import/realm-export.json
+    ports:
+      - "8280:8080"
+    networks:
+      - keycloak-network
+      - app-network
+    depends_on:
+      keycloak-database:
+        condition: service_healthy
+    restart: unless-stopped
+
+  cp-database:
+    image: postgres:16
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_CP_USER} -d ${POSTGRES_CP_DB}" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    environment:
+      POSTGRES_DB: ${POSTGRES_CP_DB}
+      POSTGRES_USER: ${POSTGRES_CP_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_CP_PASSWORD}
+    volumes:
+      - cp_postgres_data:/var/lib/postgresql/data
+      - ./deployments/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - cp-network
+    restart: unless-stopped
+
+  control-plane:
+    build:
+      context: ./apps/control-plane
+      dockerfile: Dockerfile
+    environment:
+      KEYCLOAK_ISSUER: ${KC_ISSUER}
+      POST_LOGOUT_REDIRECT_URI: ${LOGOUT_REDIRECT}
+      DB_HOST: cp-database
+      DB_NAME: ${POSTGRES_CP_DB}
+      DB_USER: ${POSTGRES_CP_USER}
+      DB_PASSWORD: ${POSTGRES_CP_PASSWORD}
+    ports:
+      - "8180:8080"
+    networks:
+      - cp-network
+      - app-network
+    depends_on:
+      cp-database:
+        condition: service_healthy
+      keycloak:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  keycloak_postgres_data:
+  cp_postgres_data:
+
+networks:
+  keycloak-network:
+  cp-network:
+  app-network:

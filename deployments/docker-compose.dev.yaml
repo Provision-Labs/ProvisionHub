@@ -1,0 +1,7 @@
+services:
+  cp-database:
+    ports:
+      - "5433:5432"
+
+  keycloak:
+    command: start-dev --import-realm
