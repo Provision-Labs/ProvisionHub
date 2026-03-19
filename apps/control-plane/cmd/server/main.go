@@ -27,7 +27,7 @@ func main() {
 	config.ConnectDatabase(cfg)
 
 	addr := ":" + strconv.Itoa(cfg.Port)
-	log.Printf("Starting server on port %s...\n", cfg.Port)
+	log.Printf("Starting server on port %d...\n", cfg.Port)
 
 	// Handling all middlewares needed
 	handler := middleware.Chain(mux,
