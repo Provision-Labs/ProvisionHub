@@ -91,19 +91,23 @@ ENV=development
 
 # Database
 DB_HOST=localhost
-DB_PORT=5432
+DB_PORT=5433
 DB_NAME=provisionhub
-DB_USER=postgres
-DB_PASSWORD=postgres
+DB_USERNAME=provisionhub
+DB_PASSWORD=provisionhub
 DB_SSL_MODE=disable
 
 # RabbitMQ
 RABBITMQ_URL=amqp://guest:guest@localhost:5672/
 
 # Keycloak
-OIDC_ISSUER_URL=http://localhost:8081/realms/provisionhub
-OIDC_CLIENT_ID=provisionhub-api
-OIDC_CLIENT_SECRET=your-secret-here
+ISSUER=http://localhost:8280/realms/provisionhub
+CLIENT_ID=provisionhub-api
+CLIENT_SECRET=your-secret-here
+REDIRECT_URL=http://localhost:8180/auth/callback
+SCOPES=openid,profile,email
+LOGOUT_REDIRECT_URL=http://localhost:3000/
+SESSION_SECRET=change-me
 
 # GitLab
 GITLAB_URL=https://gitlab.com
