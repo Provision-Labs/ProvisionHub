@@ -1,4 +1,4 @@
 {
-	"realm": "provisionhub",
-	"enable": true
+   "realm": "provisionhub",
+   "enabled": true
 }
