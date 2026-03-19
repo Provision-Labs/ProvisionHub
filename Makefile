@@ -22,10 +22,12 @@ dev-web:
 
 dev-local:
 > @$(MAKE) dev-infra-up
-> @trap 'kill 0' INT TERM EXIT; \
-> ( $(MAKE) dev-cp ) & \
-> ( $(MAKE) dev-web ) & \
-> wait
+> @set -e; \
+> ( $(MAKE) dev-cp ) & pid_cp=$$!; \
+> ( $(MAKE) dev-web ) & pid_web=$$!; \
+> trap 'kill $$pid_cp $$pid_web 2>/dev/null || true' INT TERM EXIT; \
+> wait $$pid_cp; \
+> wait $$pid_web
 
 # Qas
 qas:
