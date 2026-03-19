@@ -22,10 +22,12 @@ type Config struct {
 	SessionSecret  string   `env:"SESSION_SECRET" required:"true"`
 
 	// Database vars
-	Host     string `env:"DB_HOST" required:"true"`
-	Username string `env:"DB_USERNAME" required:"true"`
-	Password string `env:"DB_PASSWORD" required:"true"`
-	DbName   string `env:"DB_NAME" required:"true"`
+	Host      string `env:"DB_HOST" required:"true"`
+	PortDB    int    `env:"DB_PORT" default:"5432"`
+	Username  string `env:"DB_USERNAME" required:"true"`
+	Password  string `env:"DB_PASSWORD" required:"true"`
+	DbName    string `env:"DB_NAME" required:"true"`
+	DbSSLMode string `env:"DB_SSL_MODE" default:"disable"`
 }
 
 var cfg Config
