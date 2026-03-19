@@ -24,6 +24,7 @@ func main() {
 	auth.Init(cfg)
 	middleware.InitStore(cfg.SessionSecret)
 	auth.InitStore(cfg.SessionSecret)
+	config.ConnectDatabase(cfg)
 
 	addr := ":" + strconv.Itoa(cfg.Port)
 	log.Printf("Starting server on port %s...\n", cfg.Port)
