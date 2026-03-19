@@ -9,25 +9,25 @@ import (
 )
 
 type Config struct {
-	Port int    `env:"PORT" default:"8180"`
-	Env  string `env:"ENV" default:"development"`
+	Port int    `envconfig:"PORT" default:"8180"`
+	Env  string `envconfig:"ENV" default:"development"`
 
 	// Keycloak vars
-	Issuer         string   `env:"ISSUER" required:"true"`
-	ClientId       string   `env:"CLIENT_ID" required:"true"`
-	ClientSecret   string   `env:"CLIENT_SECRET" required:"true"`
-	RedirectURL    string   `env:"REDIRECT_URL" required:"true"`
-	Scopes         []string `env:"SCOPES" required:"true" split:","`
-	LogoutRedirect string   `env:"LOGOUT_REDIRECT_URL" required:"true"`
-	SessionSecret  string   `env:"SESSION_SECRET" required:"true"`
+	Issuer         string   `envconfig:"ISSUER" required:"true"`
+	ClientId       string   `envconfig:"CLIENT_ID" required:"true"`
+	ClientSecret   string   `envconfig:"CLIENT_SECRET" required:"true"`
+	RedirectURL    string   `envconfig:"REDIRECT_URL" required:"true"`
+	Scopes         []string `envconfig:"SCOPES" required:"true"`
+	LogoutRedirect string   `envconfig:"LOGOUT_REDIRECT_URL" required:"true"`
+	SessionSecret  string   `envconfig:"SESSION_SECRET" required:"true"`
 
 	// Database vars
-	Host      string `env:"DB_HOST" required:"true"`
-	PortDB    int    `env:"DB_PORT" default:"5432"`
-	Username  string `env:"DB_USERNAME" required:"true"`
-	Password  string `env:"DB_PASSWORD" required:"true"`
-	DbName    string `env:"DB_NAME" required:"true"`
-	DbSSLMode string `env:"DB_SSL_MODE" default:"disable"`
+	Host      string `envconfig:"DB_HOST" required:"true"`
+	PortDB    int    `envconfig:"DB_PORT" default:"5432"`
+	Username  string `envconfig:"DB_USERNAME" required:"true"`
+	Password  string `envconfig:"DB_PASSWORD" required:"true"`
+	DbName    string `envconfig:"DB_NAME" required:"true"`
+	DbSSLMode string `envconfig:"DB_SSL_MODE" default:"disable"`
 }
 
 var cfg Config
