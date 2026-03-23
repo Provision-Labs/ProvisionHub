@@ -1,0 +1,9 @@
+type: object
+required: [createdAt, updatedAt]
+properties:
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time

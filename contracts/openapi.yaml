@@ -1,0 +1,63 @@
+openapi: 3.1.0
+info:
+   title: ProvisionHub API
+   version: 0.1.0
+   summary: Control plane API for ProvisionHub
+   description: |
+      Contract-first API specification used as the single source of truth for:
+      - backend handlers/validation
+      - frontend typed clients and models
+
+      The auth routes are already implemented in the control-plane service.
+      Domain routes are listed here as product contracts and can be implemented incrementally.
+servers:
+   - url: http://localhost:8180
+     description: Local development
+   - url: https://api.provisionhub.example.com
+     description: Production
+tags:
+   - name: Health
+     description: Service health and readiness
+   - name: Auth
+     description: OIDC authentication flow (Keycloak)
+security:
+   - cookieAuth: []
+   - bearerAuth: []
+paths:
+   /v1/health:
+      $ref: ./paths/health.yaml
+   /v1/ready:
+      $ref: ./paths/ready.yaml
+   /v1/auth/login:
+      $ref: ./paths/auth-login.yaml
+   /v1/auth/callback:
+      $ref: ./paths/auth-callback.yaml
+   /v1/auth/logout:
+      $ref: ./paths/auth-logout.yaml
+components:
+   securitySchemes:
+      cookieAuth:
+         $ref: ./components/securitySchemes/cookieAuth.yaml
+      bearerAuth:
+         $ref: ./components/securitySchemes/bearerAuth.yaml
+   parameters:
+      Page:
+         $ref: ./components/parameters/Page.yaml
+      PageSize:
+         $ref: ./components/parameters/PageSize.yaml
+   responses:
+      BadRequest:
+         $ref: ./components/responses/BadRequest.yaml
+      Unauthorized:
+         $ref: ./components/responses/Unauthorized.yaml
+      NotFound:
+         $ref: ./components/responses/NotFound.yaml
+   schemas:
+      HealthStatus:
+         $ref: ./components/schemas/HealthStatus.yaml
+      ErrorResponse:
+         $ref: ./components/schemas/ErrorResponse.yaml
+      PaginationMeta:
+         $ref: ./components/schemas/PaginationMeta.yaml
+      ResourceTimestamps:
+         $ref: ./components/schemas/ResourceTimestamps.yaml

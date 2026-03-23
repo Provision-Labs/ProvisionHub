@@ -1,0 +1,21 @@
+get:
+  tags: [Auth]
+  summary: Start OIDC login flow
+  description: Redirects user to Keycloak login page.
+  operationId: authLogin
+  security: []
+  responses:
+    '302':
+      description: Redirect to identity provider
+      headers:
+        Location:
+          description: Identity provider authorize URL
+          schema:
+            type: string
+            format: uri
+    '500':
+      description: Failed to initialize auth session
+      content:
+        text/plain:
+          schema:
+            type: string

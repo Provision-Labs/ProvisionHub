@@ -1,0 +1,4 @@
+type: apiKey
+in: cookie
+name: auth-session
+description: Session cookie used by control-plane middleware.

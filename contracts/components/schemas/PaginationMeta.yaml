@@ -1,0 +1,15 @@
+type: object
+required: [page, pageSize, totalItems, totalPages]
+properties:
+  page:
+    type: integer
+    minimum: 1
+  pageSize:
+    type: integer
+    minimum: 1
+  totalItems:
+    type: integer
+    minimum: 0
+  totalPages:
+    type: integer
+    minimum: 0

@@ -1,0 +1,5 @@
+description: Authentication required or invalid credentials
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/ErrorResponse.yaml

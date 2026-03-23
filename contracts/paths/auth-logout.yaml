@@ -1,0 +1,18 @@
+get:
+  tags: [Auth]
+  summary: Logout current session
+  operationId: authLogout
+  responses:
+    '302':
+      description: Redirect to identity provider logout
+      headers:
+        Location:
+          schema:
+            type: string
+            format: uri
+    '500':
+      description: Failed to close session
+      content:
+        text/plain:
+          schema:
+            type: string

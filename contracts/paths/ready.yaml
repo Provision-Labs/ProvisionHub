@@ -1,0 +1,18 @@
+get:
+  tags: [Health]
+  summary: Readiness probe
+  operationId: getReadiness
+  security: []
+  responses:
+    '200':
+      description: Service is ready
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/HealthStatus.yaml
+    '503':
+      description: Dependencies not ready
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ErrorResponse.yaml

@@ -1,0 +1,36 @@
+get:
+  tags: [Auth]
+  summary: OIDC callback endpoint
+  operationId: authCallback
+  security: []
+  parameters:
+    - name: code
+      in: query
+      required: true
+      schema:
+        type: string
+    - name: state
+      in: query
+      required: true
+      schema:
+        type: string
+  responses:
+    '302':
+      description: Redirect after successful login
+      headers:
+        Location:
+          schema:
+            type: string
+            format: uri-reference
+    '400':
+      description: Invalid callback request
+      content:
+        text/plain:
+          schema:
+            type: string
+    '500':
+      description: Callback processing failed
+      content:
+        text/plain:
+          schema:
+            type: string

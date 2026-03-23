@@ -1,0 +1,18 @@
+get:
+  tags: [Health]
+  summary: Health check
+  operationId: getHealth
+  security: []
+  responses:
+    '200':
+      description: Service is healthy
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/HealthStatus.yaml
+          examples:
+            ok:
+              value:
+                status: healthy
+                service: control-plane
+                timestamp: '2026-03-20T12:00:00Z'
