@@ -2,4 +2,4 @@
 !.env.example
 .idea
 
-control-plane/tmp/*
+apps/control-plane/tmp
