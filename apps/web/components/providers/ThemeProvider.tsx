@@ -32,6 +32,7 @@ export default function ThemeProvider({ children }: ThemeProviderProps) {
 
    // Load theme from localStorage on mount
    useEffect(() => {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setMounted(true);
       const savedMode = localStorage.getItem("themeMode") as PaletteMode | null;
       if (savedMode) {
