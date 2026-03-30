@@ -3,3 +3,4 @@
 .idea
 
 apps/control-plane/tmp
+apps/control-plane/plugins
