@@ -1,16 +1,15 @@
 package middleware
 
 import (
+	"context"
 	"net/http"
 
-	"github.com/gorilla/sessions"
+	"github.com/Provision-Labs/ProvisionHub/apps/control-plane/internal/auth"
 )
 
-var store *sessions.CookieStore
+type contextUserKey string
 
-func InitStore(secret string) {
-	store = sessions.NewCookieStore([]byte(secret))
-}
+const userIdentityKey contextUserKey = "auth.user_identity"
 
 var publicRoutes = map[string]bool{
 	"/auth/login":    true,
@@ -25,16 +24,38 @@ func RequireAuth(next http.Handler) http.Handler {
 			return
 		}
 
-		session, err := store.Get(r, "auth-session")
+		p, err := auth.GetProvider()
+		if err != nil {
+			http.Error(w, "Auth provider unavailable", http.StatusServiceUnavailable)
+			return
+		}
+
+		reqCtx, err := auth.RequestToHTTPContext(r)
+		if err != nil {
+			http.Error(w, "Failed to read request", http.StatusInternalServerError)
+			return
+		}
+
+		result, err := p.Authenticate(r.Context(), auth.AuthenticateRequest{
+			HTTP:    reqCtx,
+			Cookies: auth.RequestCookies(r),
+		})
 		if err != nil {
 			http.Redirect(w, r, "/auth/login", http.StatusFound)
 			return
 		}
-		token, ok := session.Values["access-token"].(string)
-		if !ok || token == "" {
+
+		if !result.Authenticated {
 			http.Redirect(w, r, "/auth/login", http.StatusFound)
 			return
 		}
-		next.ServeHTTP(w, r)
+
+		ctx := context.WithValue(r.Context(), userIdentityKey, result.Identity)
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+func UserIdentityFromContext(ctx context.Context) (auth.UserIdentity, bool) {
+	id, ok := ctx.Value(userIdentityKey).(auth.UserIdentity)
+	return id, ok
 }
