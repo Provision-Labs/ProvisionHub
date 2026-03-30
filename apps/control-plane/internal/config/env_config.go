@@ -11,15 +11,12 @@ import (
 type Config struct {
 	Port int    `envconfig:"PORT" default:"8180"`
 	Env  string `envconfig:"ENV" default:"development"`
+	PluginsRegistryPath string `envconfig:"PLUGINS_REGISTRY_PATH" default:"plugins.json"`
 
-	// Keycloak vars
-	Issuer         string   `envconfig:"ISSUER" required:"true"`
-	ClientId       string   `envconfig:"CLIENT_ID" required:"true"`
-	ClientSecret   string   `envconfig:"CLIENT_SECRET" required:"true"`
-	RedirectURL    string   `envconfig:"REDIRECT_URL" required:"true"`
-	Scopes         []string `envconfig:"SCOPES" required:"true"`
-	LogoutRedirect string   `envconfig:"LOGOUT_REDIRECT_URL" required:"true"`
-	SessionSecret  string   `envconfig:"SESSION_SECRET" required:"true"`
+	// Auth plugin connection vars
+	AuthPluginAddr     string `envconfig:"AUTH_PLUGIN_ADDR" default:"127.0.0.1:50051"`
+	AuthPluginInsecure bool   `envconfig:"AUTH_PLUGIN_INSECURE" default:"true"`
+	AuthPluginTimeoutMs int   `envconfig:"AUTH_PLUGIN_TIMEOUT_MS" default:"2000"`
 
 	// Database vars
 	Host      string `envconfig:"DB_HOST" required:"true"`
