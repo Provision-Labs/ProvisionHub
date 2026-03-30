@@ -2,5 +2,19 @@
 !.env.example
 .idea
 
-apps/control-plane/tmp
+# Local files
 apps/control-plane/plugins
+apps/control-plane/plugins.json
+apps/control-plane/server
+apps/control-plane/tmp
+
+# Binaries
+/bin/
+*.bin
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Build artifacts
+/*.tmp
