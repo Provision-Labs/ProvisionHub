@@ -29,6 +29,32 @@ dev-local:
 > wait $$pid_cp; \
 > wait $$pid_web
 
+# Tools - provision-cli
+
+build-provision-cli:
+> @mkdir -p bin
+> @cd tools/provision-cli && go build -o ../../bin/provision-cli .
+> @echo "✓ provision-cli built at ./bin/provision-cli"
+
+generate-plugins:
+> @echo "[provision-cli] Generating plugins.json from conf.json manifests..."
+> @if [ -f ./bin/provision-cli ]; then \
+>   ./bin/provision-cli generate; \
+> else \
+>   go run ./tools/provision-cli generate; \
+> fi
+
+provision-cli-version:
+> @./bin/provision-cli version || go run ./tools/provision-cli version
+
+provision-cli-help:
+> @./bin/provision-cli help || go run ./tools/provision-cli help
+
+provision-cli-install:
+> @echo "Installing provision-cli globally..."
+> @cd tools/provision-cli && go install .
+> @echo "✓ provision-cli installed (run 'provision-cli' from anywhere)"
+
 # Qas
 qas:
 > docker compose $(ENV_FILE) $(COMPOSE_QAS) up -d
