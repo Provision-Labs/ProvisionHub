@@ -1,6 +1,6 @@
 syntax = "proto3";
 package provisionhub.auth.v1;
-option go_package = "github.com/Provision-Labs/provisionhub-official-plugins/keycloak-go/proto/authv1;authv1";
+option go_package = "github.com/Provision-Labs/provisionhub/proto/auth/v1;authv1";
 
 service AuthPlugin {
   rpc StartLogin      (StartLoginRequest)      returns (StartLoginResponse);
