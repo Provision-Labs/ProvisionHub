@@ -1,0 +1,98 @@
+syntax = "proto3";
+package provisionhub.auth.v1;
+option go_package = "github.com/Provision-Labs/provisionhub-official-plugins/keycloak-go/proto/authv1;authv1";
+
+service AuthPlugin {
+  rpc StartLogin      (StartLoginRequest)      returns (StartLoginResponse);
+  rpc HandleCallback  (HandleCallbackRequest)  returns (HandleCallbackResponse);
+  rpc Logout          (LogoutRequest)          returns (LogoutResponse);
+  rpc Authenticate    (AuthenticateRequest)    returns (AuthenticateResponse);
+  rpc Health          (HealthRequest)          returns (HealthResponse);
+}
+
+// ── Shared ────────────────────────────────────────────────
+message Header {
+  string          key    = 1;
+  repeated string values = 2;
+}
+
+message HttpContext {
+  string          method      = 1;
+  string          path        = 2;
+  string          query       = 3;
+  repeated Header headers     = 4;
+  string          remote_addr = 5;
+  bytes           body        = 6;
+}
+
+message CookieKV {
+  string name      = 1;
+  string value     = 2;
+  int32  max_age   = 3;
+  string path      = 4;
+  string domain    = 5;
+  bool   secure    = 6;
+  bool   http_only = 7;
+  string same_site = 8;
+}
+
+message UserIdentity {
+  string              user_id  = 1;
+  string              username = 2;
+  string              email    = 3;
+  repeated string     groups   = 4;
+  map<string, string> extra    = 5;
+}
+
+// ── Requests/Responses ────────────────────────────────────
+message StartLoginRequest {
+  HttpContext       http    = 1;
+  repeated CookieKV cookies = 2;
+}
+message StartLoginResponse {
+  int32             status_code  = 1;
+  string            redirect_url = 2;
+  repeated Header   set_headers  = 3;
+  repeated CookieKV set_cookies  = 4;
+}
+
+message HandleCallbackRequest {
+  HttpContext       http    = 1;
+  repeated CookieKV cookies = 2;
+}
+message HandleCallbackResponse {
+  int32             status_code  = 1;
+  string            redirect_url = 2;
+  repeated Header   set_headers  = 3;
+  repeated CookieKV set_cookies  = 4;
+  UserIdentity      identity     = 5;
+}
+
+message LogoutRequest {
+  HttpContext       http    = 1;
+  repeated CookieKV cookies = 2;
+}
+message LogoutResponse {
+  int32             status_code  = 1;
+  string            redirect_url = 2;
+  repeated Header   set_headers  = 3;
+  repeated CookieKV set_cookies  = 4;
+}
+
+message AuthenticateRequest {
+  HttpContext       http    = 1;
+  repeated CookieKV cookies = 2;
+}
+message AuthenticateResponse {
+  bool         authenticated = 1;
+  UserIdentity identity      = 2;
+  string       reason        = 3;
+}
+
+message HealthRequest {}
+message HealthResponse {
+  bool   ready    = 1;
+  string version  = 2;
+  string provider = 3;
+  string message  = 4;
+}
